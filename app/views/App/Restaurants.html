@@ -1,0 +1,13 @@
+{{set . "title" .restaurantName}}
+{{template "header.html" .}}
+
+<div class="container">
+  <div class="row">
+    <div class="span6">
+      <h1>{{.restaurantName}}</h1>
+      <a href="/">Back to form</a>
+    </div>
+  </div>
+</div>
+
+{{template "footer.html" .}}
