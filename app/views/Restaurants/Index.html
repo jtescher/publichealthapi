@@ -14,7 +14,12 @@
 <div class="container">
   <div class="row">
     <div class="span6">
-      <h1>{{.restaurantName}}</h1>
+      <h1>Search: {{.restaurantName}}</h1>
+      <ul>
+      {{range .restaurants}}
+        <li>{{.Name}}</li>
+      {{end}}
+      </ul>
       <a href="/">Back to form</a>
     </div>
   </div>
