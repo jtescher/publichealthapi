@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"github.com/jtescher/publichealthapi/app/models"
-	"github.com/jtescher/publichealthapi/app/routes"
 	"github.com/robfig/revel"
 	"strings"
 )
@@ -18,7 +17,7 @@ func (c Restaurants) Index(restaurantName string) revel.Result {
 	if c.Validation.HasErrors() {
 		c.Validation.Keep()
 		c.FlashParams()
-		return c.Redirect(routes.App.Index)
+		return c.Redirect(App.Index)
 	}
 
 	results, err := c.Txn.Select(models.Restaurant{}, `SELECT * FROM Restaurants WHERE LOWER(Name) like $1`, "%"+strings.ToLower(restaurantName)+"%")
