@@ -1,7 +1,9 @@
 package app
 
-import "github.com/robfig/revel"
-import "github.com/robfig/revel/revel"
+import (
+  "github.com/robfig/revel"
+  _ "github.com/robfig/revel/reve"
+)
 
 func init() {
 	// Filters is the default set of global filters.
