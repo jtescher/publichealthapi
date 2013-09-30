@@ -3,7 +3,9 @@ package controllers
 import (
 	"github.com/jtescher/publichealthapi/app/models"
 	"github.com/robfig/revel"
+	"github.com/robfig/revel/cache"
 	"strings"
+	"time"
 )
 
 type Restaurants struct {
@@ -20,6 +22,16 @@ func (c Restaurants) Index(restaurantName string) revel.Result {
 		return c.Redirect(App.Index)
 	}
 
+	var restaurants []*models.Restaurant
+	if err := cache.Get("restaurants_by_name_"+strings.ToLower(restaurantName), &restaurants); err != nil {
+		restaurants = c.loadRestaurants(restaurantName)
+		go cache.Set("restaurants_by_name_"+strings.ToLower(restaurantName), restaurants, 1*time.Minute)
+	}
+
+	return c.Render(restaurantName, restaurants)
+}
+
+func (c Restaurants) loadRestaurants(restaurantName string) []*models.Restaurant {
 	results, err := c.Txn.Select(models.Restaurant{}, `SELECT * FROM Restaurants WHERE LOWER(Name) like $1`, "%"+strings.ToLower(restaurantName)+"%")
 	if err != nil {
 		panic(err)
@@ -31,5 +43,5 @@ func (c Restaurants) Index(restaurantName string) revel.Result {
 		restaurants = append(restaurants, r)
 	}
 
-	return c.Render(restaurantName, restaurants)
+	return restaurants
 }
